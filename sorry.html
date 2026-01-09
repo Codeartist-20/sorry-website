@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello, Meri Jaan.exe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- GLOBAL & TYPOGRAPHY STYLES --- */
+        :root {
+            /* Your requested Dark Romantic Theme */
+            --color-bg-dark: #120a1a;
+            --color-primary: #ff5277; /* Soft Red/Pink Accent */
+            --color-secondary: #ffafcc; /* Lighter Pink */
+            --color-text: #f0e6f2;
+            --color-glass-dark: rgba(255, 255, 255, 0.05);
+            --color-glass-light: rgba(255, 255, 255, 0.15);
+            --shadow-primary: 0 8px 32px 0 rgba(255, 82, 119, 0.3);
+            --shadow-glass: 0 4px 30px rgba(0, 0, 0, 0.2);
+            --border-radius-card: 30px;
+            --border-radius-btn: 15px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', 'Inter', sans-serif;
+            color: var(--color-text);
+        }
+
+        body {
+            /* Deep purple/black romantic gradient background */
+            background: linear-gradient(135deg, #120a1a 0%, #301934 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- APP CONTAINER & SCREEN MANAGEMENT --- */
+        #app-container {
+            width: 100%;
+            max-width: 400px; 
+            height: 100vh;
+            max-height: 800px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            /* Smoother transitions */
+            transition: opacity 0.5s ease-in-out, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateY(20px) scale(0.98);
+            pointer-events: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* --- GLASSMORHISM CARD STYLES (Focus on Rounded/Soft Look) --- */
+        .card {
+            background: var(--color-glass-dark);
+            border-radius: var(--border-radius-card);
+            box-shadow: var(--shadow-glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--color-glass-light);
+            padding: 35px 25px;
+            width: 100%;
+            max-height: 90%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* --- TYPOGRAPHY INSIDE CARD --- */
+        h1 {
+            font-size: 1.8em;
+            color: var(--color-primary);
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 0 0 8px rgba(255, 82, 119, 0.5);
+        }
+
+        h2 {
+            font-size: 1.3em;
+            color: var(--color-secondary);
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: var(--color-text);
+        }
+        
+        .code-style {
+            display: block;
+            background: rgba(255, 82, 119, 0.1);
+            color: var(--color-secondary);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        /* --- BUTTON STYLES --- */
+        .btn {
+            background: linear-gradient(90deg, var(--color-primary), #ff2255);
+            border: none;
+            border-radius: 50px;
+            color: var(--color-text);
+            padding: 14px 28px;
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s;
+            box-shadow: var(--shadow-primary);
+            width: 100%;
+            max-width: 280px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px 0 rgba(255, 82, 119, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Heart buttons for Screen 3 (Soft Color Blocks) */
+        .heart-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid var(--color-secondary);
+            color: var(--color-secondary);
+            border-radius: var(--border-radius-btn);
+            padding: 20px;
+            width: 100%;
+            text-align: left;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: background 0.3s, border-color 0.3s, transform 0.1s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .heart-btn:hover {
+            border-color: var(--color-primary);
+            background: var(--color-glass-light);
+        }
+        
+        .heart-btn.active-reveal {
+            border-color: var(--color-primary);
+            background: var(--color-glass-light);
+        }
+
+        .heart-icon {
+            font-size: 1.5em;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+        
+        .heart-title {
+            font-size: 1.1em;
+            color: var(--color-text);
+        }
+
+        .reveal-content {
+            background: rgba(255, 82, 119, 0.08); /* Light pink background */
+            border-left: 4px solid var(--color-primary);
+            padding: 0 15px; /* Start with 0 padding top/bottom */
+            margin: 5px 0 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95em;
+            text-align: left;
+            color: var(--color-secondary);
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out, opacity 0.3s;
+            width: 100%;
+        }
+        .reveal-content.open {
+            max-height: 250px; /* Sufficiently large value */
+            padding: 15px;
+            opacity: 1;
+        }
+
+        /* --- FINAL SCREEN (S4) STYLES --- */
+        .final-message {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .final-message h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        /* --- HEART ANIMATION --- */
+        .heart-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0.7;
+        }
+
+        @keyframes float-heart {
+            0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 0; }
+            20% { opacity: 0.5; }
+            80% { opacity: 0.3; }
+            100% { transform: translateY(-10vh) translateX(50px) scale(1.2); opacity: 0; }
+        }
+
+        .heart {
+            position: absolute;
+            color: var(--color-primary);
+            font-size: 1.5em;
+            animation: float-heart 20s infinite ease-in;
+            opacity: 0;
+            text-shadow: 0 0 5px rgba(255, 82, 119, 0.8);
+        }
+
+        .heart:nth-child(1) { left: 10%; font-size: 1.2em; animation-delay: 0s; animation-duration: 12s; }
+        .heart:nth-child(2) { left: 40%; font-size: 1.8em; animation-delay: 4s; animation-duration: 15s; }
+        .heart:nth-child(3) { left: 70%; font-size: 1.5em; animation-delay: 8s; animation-duration: 10s; }
+        .heart:nth-child(4) { left: 25%; font-size: 1.0em; animation-delay: 12s; animation-duration: 18s; }
+        .heart:nth-child(5) { left: 85%; font-size: 2.0em; animation-delay: 1s; animation-duration: 13s; }
+
+    </style>
+</head>
+<body>
+
+    <div class="heart-container">
+        <div class="heart">❤️</div>
+        <div class="heart">💖</div>
+        <div class="heart">❤️</div>
+        <div class="heart">💖</div>
+        <div class="heart">❤️</div>
+    </div>
+
+    <div id="app-container">
+
+        <div id="screen-1" class="screen active">
+            <div class="card">
+                <h1>Hello, Meri Jaan.exe has started…</h1>
+                <p>
+                    <span style="font-size: 3em; display: block; margin: 10px 0;">💻</span>
+                    **Ek important notification hai jo ignore nahi ho sakta…**<br><br>
+                    Mera dil abhi High CPU Usage pe chal raha hai…<br>
+                    *Please Don't Force Quit this process.*<br><br>
+                    Thoda sa time milega kya?
+                </p>
+                <button class="btn" onclick="nextScreen(2)">Launch Conversation</button>
+            </div>
+        </div>
+
+        <div id="screen-2" class="screen">
+            <div class="card">
+                <h1>⚠️ System Alert: Critical Halt</h1>
+                <p>
+                    <span style="font-size: 3em; display: block; margin: 10px 0;">💔</span>
+                    **Runtime Error Found…**<br><br>
+                    Mujhse ek critical mistake ho gayi…<br>
+                    <code class="code-style">intention = love;</code>
+                    <code class="code-style">intention = care;</code>
+                    Yeh bug **deliberate nahi tha**… I swear!
+                </p>
+                <button class="btn" onclick="nextScreen(3)">Debug Next</button>
+            </div>
+        </div>
+
+        <div id="screen-3" class="screen">
+            <div class="card">
+                <h2>Fixing My Errors v1.0</h2>
+                <p style="margin-bottom: 5px; font-size: 0.9em; color: var(--color-secondary);">Tap karo aur dekho mere dil ke real updates</p>
+
+                <div style="width: 100%;">
+                    <button class="heart-btn" id="btn-1" onclick="toggleReveal('bug-ack', 'btn-1')">
+                        <span class="heart-icon">✅</span> <span class="heart-title">Bug Acknowledged</span>
+                    </button>
+                    <div id="bug-ack" class="reveal-content">
+                        Haan, I was wrong. Simple. Jo hua uski **100% responsibility** meri hai, aur I genuinely feel terrible for hurting you. Koi excuse nahi. I accept my mistake completely.
+                    </div>
+                </div>
+
+                <div style="width: 100%;">
+                    <button class="heart-btn" id="btn-2" onclick="toggleReveal('future-patch', 'btn-2')">
+                        <span class="heart-icon">🛠️</span> <span class="heart-title">Future Patch Update</span>
+                    </button>
+                    <div id="future-patch" class="reveal-content">
+                        I promise I will listen more, overthink less, and actively work to be the loving partner you deserve. Yeh sirf kehna nahi, **yeh mera commitment hai** to do better every single day.
+                    </div>
+                </div>
+
+                <div style="width: 100%;">
+                    <button class="heart-btn" id="btn-3" onclick="toggleReveal('core-truth', 'btn-3')">
+                        <span class="heart-icon">💖</span> <span class="heart-title">Core System Truth</span>
+                    </button>
+                    <div id="core-truth" class="reveal-content">
+                        Sabse important baat: **I love you, meri jaan.** Mera har din tumse shuru hota hai aur tumpe hi khatam. Tum meri life ka most important system ho. Nothing changes that.
+                    </div>
+                </div>
+                
+                <button id="final-msg-btn" class="btn" onclick="nextScreen(4)" disabled>Open Full Message</button>
+            </div>
+        </div>
+
+        <div id="screen-4" class="screen">
+            <div class="card final-message">
+                <span style="font-size: 3em;">🥺</span>
+                <h1>I’m Sorry, Meri Jaan 💖</h1>
+                <p style="font-size: 1em; color: var(--color-secondary); padding: 0 10px;">
+                    Dearest [Your Name],<br><br>
+                    Meri duniya ki sabse pyari insaan, I know I messed up, aur uss galti ka bojh mere dil pe hai. Tumhari khushi mere liye sabse zaroori hai, aur jab main uski wajah banta hoon, toh khud se nafrat hoti hai.<br><br>
+                    **I wish I could undo it.** Please, for the sake of our future aur mere endless pyaar ke liye, mujhe ek chance de do to make it right. Main promise karta hoon, main tumhari har baat ko dil se sununga, aur dobara aisi galti nahi hone doonga. Tum hi meri home screen ho, mera wallpaper, aur mera favorite notification.
+                    <br><br>
+                    **I love you more than words can say. Please forgive me.**
+                    <br><br>
+                    <span style="font-style: italic; display: block; margin-top: 20px; color: var(--color-primary); font-weight: 600;">— Tumhara Humesha ka (Your Name)</span>
+                </p>
+                
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- JAVASCRIPT FOR SCREEN NAVIGATION & EFFECTS ---
+
+        const screens = document.querySelectorAll('.screen');
+        const revealState = {
+            'bug-ack': false,
+            'future-patch': false,
+            'core-truth': false
+        };
+
+        /**
+         * Function to smoothly transition to the next screen.
+         * @param {number} screenNum - The index of the screen to transition to (1-based).
+         */
+        function nextScreen(screenNum) {
+            // Find the current active screen and deactivate it
+            const currentActiveScreen = document.querySelector('.screen.active');
+            if (currentActiveScreen) {
+                currentActiveScreen.classList.remove('active');
+            }
+
+            // Activate the next screen
+            const nextActiveScreen = document.getElementById(`screen-${screenNum}`);
+            if (nextActiveScreen) {
+                // Use a slight timeout for a clean transition effect
+                setTimeout(() => {
+                    nextActiveScreen.classList.add('active');
+                    // Reset card scroll to top
+                    const card = nextActiveScreen.querySelector('.card');
+                    if (card) {
+                        card.scrollTop = 0;
+                    }
+                }, 100); 
+            }
+        }
+
+        /**
+         * Toggles the visibility of the hidden apology content and checks if all are revealed.
+         * @param {string} contentId - The ID of the reveal-content element.
+         * @param {string} buttonId - The ID of the heart-btn element.
+         */
+        function toggleReveal(contentId, buttonId) {
+            const content = document.getElementById(contentId);
+            const button = document.getElementById(buttonId);
+
+            // Toggle the content visibility
+            if (content.classList.contains('open')) {
+                // Closing
+                content.classList.remove('open');
+                button.classList.remove('active-reveal');
+                revealState[contentId] = false;
+            } else {
+                // Opening
+                content.classList.add('open');
+                button.classList.add('active-reveal');
+                revealState[contentId] = true;
+            }
+            
+            // Check if all three contents are revealed
+            checkAllRevealed();
+        }
+
+        /**
+         * Checks if all three reveal-content sections on Screen 3 are open.
+         * If they are, it enables the final "Open Full Message" button.
+         */
+        function checkAllRevealed() {
+            const finalButton = document.getElementById('final-msg-btn');
+
+            // Check if all values in the revealState object are true
+            const allOpen = Object.values(revealState).every(state => state === true);
+
+            if (allOpen) {
+                finalButton.disabled = false;
+            } else {
+                finalButton.disabled = true;
+            }
+        }
+        
+        // Initial setup to ensure only screen 1 is active on load
+        document.addEventListener('DOMContentLoaded', () => {
+            nextScreen(1);
+        });
+
+    </script>
+</body>
+</html>
